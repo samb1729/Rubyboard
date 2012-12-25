@@ -2,7 +2,7 @@
 
 <%= erb :post_form %><br>
 
-<% @@posts.reverse.each do |post| %>
-	<%= post.name %> @ <%=h post.time %><br>
+<% @posts.reverse.each do |post| %>
+	<strong><%= post.name %></strong>!<%= trip post.tripcode %> @ <%=h post.created_at %><br>
 	<%= post.content %><br><br>
 <% end %>
