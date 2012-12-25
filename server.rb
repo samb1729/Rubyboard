@@ -18,7 +18,8 @@ helpers do
     Rack::Utils.escape_html text
   end
   def trip tripcode
-    trip = Digest::MD5.hexdigest(tripcode << "salt to annoy duk")[0..8]
+    return "" unless tripcode
+    trip = "!" << Digest::MD5.hexdigest(tripcode << "salt to annoy duk")[0..8]
   end
 end
 

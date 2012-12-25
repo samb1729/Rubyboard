@@ -1,8 +1,9 @@
 <h1>Message Board</h1>
 
-<%= erb :post_form %><br>
+<%= erb :post_form %>
 
 <% @posts.reverse.each do |post| %>
-	<strong><%= post.name %></strong>!<%= trip post.tripcode %> @ <%=h post.created_at %><br>
+	<strong><%= post.name %></strong><%= trip(post.tripcode) %> @ <%=h post.created_at %>
+	<a name=<%= '"' << post.id.to_s << '"' %>></a><br>
 	<%= post.content %><br><br>
 <% end %>
