@@ -22,6 +22,8 @@ end
 
 post '/post' do
   name, content = params[:name], params[:post]
-  @@posts << Post.new(name, content.bbcode_to_html, Time.now)
+  unless name.length < 3 or content.length < 10
+    @@posts << Post.new(name, content.bbcode_to_html({}, true, :disable, :image), Time.now)
+  end
   redirect '/'
 end
