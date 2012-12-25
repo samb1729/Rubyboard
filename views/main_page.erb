@@ -3,7 +3,8 @@
 <%= erb :post_form %>
 
 <% @posts.reverse.each do |post| %>
+	<a href=<%= 'javascript:quote(\'' <<  post.id.to_s << '\');' %>><%= post.id.to_s %></a>: 
 	<strong><%= post.name %></strong><%= trip(post.tripcode) %> @ <%=h post.created_at %>
 	<a name=<%= '"' << post.id.to_s << '"' %>></a><br>
-	<%= post.content %><br><br>
+	<%= post.content.bbcode_to_html(@bbcodes, true, :disable, :image, :video) %><br><br>
 <% end %>

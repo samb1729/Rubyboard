@@ -5,5 +5,10 @@
 </head>
 <body>
 	<%= yield %>
+	<script type="text/javascript">
+	function quote(post) {
+		document.postform.post.value += ">>" + post + "\n";
+	}
+	</script>
 </body>
 </html>

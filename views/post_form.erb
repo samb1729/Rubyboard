@@ -1,4 +1,4 @@
-<form action="/post" method="post">
+<form action="/post" method="post" name="postform">
 	Name: <input type="text" name="name" <%= "value=\"#{session['name']}\"" if session['name'] %>> (3 character minimum)<br>
 	Post: <textarea name="post"></textarea> (10 character minimum)<br>
 	      <input type="submit" value="Post"><br>
