@@ -1,0 +1,8 @@
+<h1>Message Board</h1>
+
+<%= erb :post_form %><br>
+
+<% @@posts.reverse.each do |post| %>
+	<strong><%=h post.name %></strong> @ <%=h post.time %><br>
+	<%= h(post.content).split("\n").join("<br>") %><br><br>
+<% end %>
