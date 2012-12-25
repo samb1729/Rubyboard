@@ -4,5 +4,5 @@
 
 <% @@posts.reverse.each do |post| %>
 	<strong><%=h post.name %></strong> @ <%=h post.time %><br>
-	<%= h(post.content).split("\n").join("<br>") %><br><br>
+	<%= post.content %><br><br>
 <% end %>

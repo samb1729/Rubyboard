@@ -2,6 +2,7 @@ $: << File.dirname(__FILE__)
 
 require 'sinatra'
 require 'post'
+require 'bb-ruby'
 
 set :port, 80
 
@@ -21,6 +22,6 @@ end
 
 post '/post' do
   name, content = params[:name], params[:post]
-  @@posts << Post.new(name, content, Time.now)
+  @@posts << Post.new(name, content.bbcode_to_html, Time.now)
   redirect '/'
 end
