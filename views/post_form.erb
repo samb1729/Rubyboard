@@ -1,6 +1,7 @@
-<form action="/post" method="post" name="postform">
+<form action="/post" method="post" enctype="multipart/form-data" name="postform">
 	Name: <input type="text" name="name" <%= "value=\"#{session['name']}\"" if session['name'] %>> (3 character minimum)<br>
 	Post: <textarea name="post"></textarea> (10 character minimum)<br>
+	Image: <input type="file" name="image" accept="image/*"> (500kb maximum)<br>
 	      <input type="submit" value="Post"><br>
 	Note for flooding fags: There's a 10 second wait between posts.
 </form>

@@ -7,11 +7,12 @@ require 'data_mapper'
 require 'dm-migrations'
 
 set :port, 80
+set :root, File.dirname(__FILE__)
 enable :sessions
 
 DataMapper.setup(:default, 'sqlite:///'<< File.expand_path('../board.db', __FILE__))
 DataMapper.finalize
-DataMapper.auto_migrate! unless Post.all.count > 0
+DataMapper.auto_upgrade!
 
 helpers do
   def h text
@@ -20,7 +21,7 @@ helpers do
 
   def trip tripcode
     return "" unless tripcode
-    trip = "!" << Digest::MD5.hexdigest(tripcode << "salt to annoy duk")[0..8]
+    trip = "!" << Digest::MD5.hexdigest(tripcode + "salt to annoy duk")[0..8]
   end
 end
 
@@ -47,10 +48,33 @@ post '/post' do
   session['name'] = name
   session['lastpost'] ||= Time.now.strftime("%s").to_i - 10
 
+  filename = nil
+  thumbnail = nil
+
+  if params[:image] and (params[:image][:tempfile].size < 500 * 1024)
+    time = Time.now.strftime("%s").to_i % 100000
+
+    extension = ".jpg" if params[:image][:head] =~ /jpg/
+    extension = ".png" if params[:image][:head] =~ /png/
+    extension = ".gif" if params[:image][:head] =~ /gif/
+
+    if extension
+      filename = 'images/' + time.to_s + extension
+      FileUtils.cp params[:image][:tempfile], 'public/' << filename
+
+#     thumbnail = 'public/thumbs/' + time.to_s + '.jpg'
+#     image = Image.read filename
+#     image.change_geometry! "120x120" do |cols, rows|
+#       image.thumbnail! cols, rows
+#     end
+#     image.write thumbnail
+    end
+  end
+
   name, tripcode = name.split('#', 2)
 
   unless name.length < 3 or content.length < 10 or Time.now.strftime("%s").to_i - session['lastpost'].to_i < 10
-    post = Post.create :name => name, :tripcode => tripcode, :content => content, :created_at => Time.now
+    post = Post.create :name => name, :tripcode => tripcode, :content => content, :created_at => Time.now, :image => filename, :thumb => thumbnail
     post.save
   end
   redirect '/'

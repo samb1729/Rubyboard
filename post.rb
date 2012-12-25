@@ -12,4 +12,6 @@ class Post
   property :tripcode, String
   property :content, Text
   property :created_at, DateTime
+  property :image, String, :required => false
+  property :thumb, String, :required => false
 end
