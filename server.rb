@@ -78,15 +78,21 @@ post '/post' do
       filename = 'images/' + time.to_s + extension
       FileUtils.cp params[:image][:tempfile], 'public/' << filename
 
-      thumbnail = 'thumbs/' + time.to_s + '.jpg'
-      `convert -resize 120x120\\> public/#{filename} public/#{thumbnail}`
+      thumbnail = 'thumbs/' + time.to_s + extension
+      `convert -resize 120x120 public/#{filename} public/#{thumbnail}`
     end
   end
 
   name, tripcode = name.split('#', 2)
 
   unless name.length < 3 or content.length < 10 or Time.now.strftime("%s").to_i - session['lastpost'].to_i < 10
-    post = Post.create :name => name, :tripcode => tripcode, :content => content, :created_at => Time.now, :image => filename, :thumb => thumbnail
+    post = Post.create({:name => name,
+                        :tripcode => tripcode,
+                        :content => content,
+                        :created_at => Time.now,
+                        :image => filename,
+                        :thumb => thumbnail,
+                        :ip => request.ip})
     post.save
   end
   redirect '/'

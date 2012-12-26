@@ -14,4 +14,5 @@ class Post
   property :created_at, DateTime
   property :image, String, :required => false
   property :thumb, String, :required => false
+  property :ip, String, :required => false
 end
