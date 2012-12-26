@@ -1,4 +1,4 @@
-<h1>Message Board</h1>
+<h1>Goyim Inc, Sponsored by Judaism</h1>
 
 <%= erb :post_form %>
 
@@ -7,14 +7,15 @@
 	<strong><%= post.name %></strong><%= trip(post.tripcode) %> @ <%=h post.created_at %>
 	<a name=<%= '"' << post.id.to_s << '"' %>></a><br>
 	<% if post.image %>
-		<a href=<%= '"' << post.image << '"' %>><img src=<%= '"' << post.image << '"' %> width=120 height=120></a>
+		<a href=<%= '"' << post.image << '"' %>><img src=<%= '"' << (!post.thumb.nil? ? post.thumb : "") << '"' %> width=120 height=120></a><br>
 	<% end %>
 	<% post.content.bbcode_to_html(@bbcodes, true, :disable, :image, :video, :size).split('\n').each do |line| %>
-		<% if line[0..3] == "&gt;" %>
+		<% if line.include? "&gt;" %>
 			<span style="color: #0c0;"><%= line %></span>
 		<% else %>
 			<%= line %>
 		<% end %>
 		<br>
 	<% end %>
+	<hr>
 <% end %>

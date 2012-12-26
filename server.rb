@@ -33,11 +33,18 @@ get '/' do
   @posts = Post.all
   @bbcodes = {
     'Quote' => [
-      /&gt;&gt;([0-9]*)/,
+      /&gt;&gt;([0-9]+)/,
       '<a href="#\1">>>\1</a>',
       'Meme arrows',
       '>>123',
       :quote
+    ],
+    'Board link' => [
+      /&gt;&gt;&gt;(\/\w+\/)/,
+      '<a href="http://boards.4chan.org\1">>>>\1</a>',
+      'Cross-site link',
+      '>>>/b/',
+      :boardlink
     ]
   }
   erb :main_page, :layout => :layout
@@ -62,12 +69,8 @@ post '/post' do
       filename = 'images/' + time.to_s + extension
       FileUtils.cp params[:image][:tempfile], 'public/' << filename
 
-#     thumbnail = 'public/thumbs/' + time.to_s + '.jpg'
-#     image = Image.read filename
-#     image.change_geometry! "120x120" do |cols, rows|
-#       image.thumbnail! cols, rows
-#     end
-#     image.write thumbnail
+      thumbnail = 'thumbs/' + time.to_s + '.jpg'
+      `convert -resize 120x120 public/#{filename} public/#{thumbnail}`
     end
   end
 
