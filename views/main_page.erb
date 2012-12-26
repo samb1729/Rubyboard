@@ -3,19 +3,6 @@
 <%= erb :post_form %>
 
 <% @posts.reverse.each do |post| %>
-	<a href=<%= '"javascript:quote(\'' <<  post.id.to_s << '\');"' %>><%= post.id.to_s %></a>: 
-	<strong><%= post.name %></strong><%= trip(post.tripcode) %> @ <%=h post.created_at %>
-	<a name=<%= '"' << post.id.to_s << '"' %>></a><br>
-	<% if post.image %>
-		<a href=<%= '"' << post.image << '"' %>><img src=<%= '"' << (!post.thumb.nil? ? post.thumb : "") << '"' %> width=120 height=120></a><br>
-	<% end %>
-	<% post.content.bbcode_to_html(@bbcodes, true, :disable, :image, :video, :size).split('\n').each do |line| %>
-		<% if line.include? "&gt;" %>
-			<span style="color: #0c0;"><%= line %></span>
-		<% else %>
-			<%= line %>
-		<% end %>
-		<br>
-	<% end %>
-	<hr>
+	<% @post = post %>
+	<%= erb :post %>
 <% end %>
