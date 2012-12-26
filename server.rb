@@ -27,6 +27,7 @@ end
 
 before do
   session ||= []
+  @@request_times ||= {}
 end
 
 get '/' do
@@ -54,6 +55,14 @@ post '/post' do
   name, content = params[:name], params[:post]
   session['name'] = name
   session['lastpost'] ||= Time.now.strftime("%s").to_i - 10
+
+  req_time = @@request_times[request.ip]
+
+  if req_time and Time.now.strftime("%s").to_i - req_time.to_i < 10
+    return redirect '/'
+  end
+
+  @@request_times[request.ip] = Time.now.strftime("%s").to_i
 
   filename = nil
   thumbnail = nil
