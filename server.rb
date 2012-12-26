@@ -26,7 +26,7 @@ helpers do
 end
 
 before do
-  session ||= []
+  session ||= {}
   @@request_times ||= {}
 end
 
@@ -79,7 +79,7 @@ post '/post' do
       FileUtils.cp params[:image][:tempfile], 'public/' << filename
 
       thumbnail = 'thumbs/' + time.to_s + '.jpg'
-      `convert -resize 120x120 public/#{filename} public/#{thumbnail}`
+      `convert -resize 120x120\\> public/#{filename} public/#{thumbnail}`
     end
   end
 
